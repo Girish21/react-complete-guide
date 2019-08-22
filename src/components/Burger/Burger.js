@@ -19,8 +19,6 @@ const burger = props => {
     })
     .reduce((arr, ele) => [...arr, ...ele], []);
 
-  console.log(ingredients);
-
   if (ingredients.length !== 0)
     ingredients = [
       <BurgerIngredient type={IngredientTypes.breadTop} key={Math.random()} />,

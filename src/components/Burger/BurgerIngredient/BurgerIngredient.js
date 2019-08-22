@@ -6,10 +6,10 @@ import classes from "./BurgerIngredient.module.css";
 
 import IngredientType from "./IngredientType";
 
-const burgerIngredient = props => {
+const burgerIngredient = ({ type }) => {
   let ingredient = null;
 
-  switch (props.type) {
+  switch (type) {
     case IngredientType.breadBottom:
       ingredient = <div className={classes.BreadBottom} />;
       break;
@@ -24,7 +24,7 @@ const burgerIngredient = props => {
     case IngredientType.meat:
       ingredient = <div className={classes.Meat} />;
       break;
-    case IngredientType.bacon:
+    case IngredientType.bacaon:
       ingredient = <div className={classes.Bacon} />;
       break;
     case IngredientType.cheese:

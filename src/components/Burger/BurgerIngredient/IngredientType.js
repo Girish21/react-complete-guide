@@ -4,7 +4,7 @@ const ingredientType = Object.freeze({
   meat: 3,
   cheese: 4,
   salad: 5,
-  bacon: 6
+  bacaon: 6
 });
 
 export default ingredientType;
