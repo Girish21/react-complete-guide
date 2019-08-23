@@ -13,7 +13,13 @@ const controls = [
   { label: "Meat" }
 ];
 
-const buildControls = ({ changeHandler, disabledArray, totalPrice }) => {
+const buildControls = ({
+  changeHandler,
+  disabledArray,
+  totalPrice,
+  disableOrder,
+  order
+}) => {
   return (
     <div className={classes.BuildControls}>
       <div>
@@ -27,6 +33,13 @@ const buildControls = ({ changeHandler, disabledArray, totalPrice }) => {
           disabled={disabledArray[ele.label.toLowerCase()]}
         />
       ))}
+      <button
+        disabled={!disableOrder}
+        className={classes.OrderButton}
+        onClick={order}
+      >
+        Order Now
+      </button>
     </div>
   );
 };
@@ -34,7 +47,9 @@ const buildControls = ({ changeHandler, disabledArray, totalPrice }) => {
 buildControls.prototype = {
   changeHandler: PropTypes.func.isRequired,
   disabledArray: PropTypes.array.isRequired,
-  totalPrice: PropTypes.number.isRequired
+  totalPrice: PropTypes.number.isRequired,
+  disableOrder: PropTypes.bool.isRequired,
+  order: PropTypes.func.isRequired
 };
 
 export default buildControls;

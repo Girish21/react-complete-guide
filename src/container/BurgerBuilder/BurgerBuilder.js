@@ -5,6 +5,7 @@ import Aux from "../../AuxHOC";
 import OperatorType from "./BurgerOperations";
 import Burger from "../../components/Burger/Burger";
 import BurgerControls from "../../components/Burger/BuildControls/BuildControls";
+import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
 const INGREDINT_PRICE = Object.freeze({
   salad: 0.5,
@@ -23,9 +24,20 @@ class BurgerBuilder extends React.Component {
         cheese: 0,
         meat: 0
       },
-      totalPrice: 0
+      totalPrice: 0,
+      showOrderSummary: false
     };
   }
+
+  orderHandler = () => {
+    this.setState({ showOrderSummary: true });
+  };
+
+  backdropClickHandler = () => {
+    this.setState({ showOrderSummary: false });
+  };
+
+  checkoutHandler = () => {};
 
   updateIngredient = (type, operator) => {
     let newIngredients = { ...this.state.ingredients };
@@ -45,14 +57,17 @@ class BurgerBuilder extends React.Component {
     }
     this.setState({
       ingredients: newIngredients,
-      totalPrice: newTotalPrice
+      totalPrice: newTotalPrice,
+      showOrderSummary: false
     });
   };
 
   render() {
-    const disabled = { ...this.state.ingredients };
-    Object.keys(disabled).forEach(key => {
-      disabled[key] = disabled[key] === 0;
+    const decrementDisabled = { ...this.state.ingredients };
+    let orderDisabled = false;
+    Object.keys(decrementDisabled).forEach(key => {
+      decrementDisabled[key] = decrementDisabled[key] === 0;
+      orderDisabled = orderDisabled || !decrementDisabled[key];
     });
     return (
       <Aux>
@@ -60,7 +75,16 @@ class BurgerBuilder extends React.Component {
         <br />
         <BurgerControls
           changeHandler={this.updateIngredient}
-          disabledArray={disabled}
+          disabledArray={decrementDisabled}
+          totalPrice={this.state.totalPrice}
+          disableOrder={orderDisabled}
+          order={this.orderHandler}
+        />
+        <OrderSummary
+          click={this.backdropClickHandler}
+          showModal={this.state.showOrderSummary}
+          ingredients={this.state.ingredients}
+          checkoutHandler={this.checkoutHandler}
           totalPrice={this.state.totalPrice}
         />
       </Aux>

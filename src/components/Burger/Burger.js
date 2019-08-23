@@ -19,18 +19,16 @@ const burger = props => {
     })
     .reduce((arr, ele) => [...arr, ...ele], []);
 
-  if (ingredients.length !== 0)
-    ingredients = [
-      <BurgerIngredient type={IngredientTypes.breadTop} key={Math.random()} />,
-      ...ingredients,
-      <BurgerIngredient
-        type={IngredientTypes.breadBottom}
-        key={Math.random()}
-      />
-    ];
-  else ingredients = <h1>Please start adding ingredients to the Burger</h1>;
+  if (ingredients.length === 0)
+    ingredients = <h4>Please start adding ingredients to the Burger</h4>;
 
-  return <div className={classes.Burger}>{ingredients}</div>;
+  return (
+    <div className={classes.Burger}>
+      <BurgerIngredient type={IngredientTypes.breadTop} />
+      {ingredients}
+      <BurgerIngredient type={IngredientTypes.breadBottom} />
+    </div>
+  );
 };
 
 export default burger;
