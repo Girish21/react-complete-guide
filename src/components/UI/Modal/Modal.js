@@ -26,4 +26,4 @@ modal.prototype = {
   show: PropTypes.bool.isRequired
 };
 
-export default modal;
+export default React.memo(modal);
