@@ -17,3 +17,14 @@
 .Toolbar nav {
   height: 100%;
 }
+
+.Logo {
+  height: 80%;
+}
+
+@media (max-width: 500px) {
+  .NavigationItems,
+  .Logo {
+    display: none;
+  }
+}

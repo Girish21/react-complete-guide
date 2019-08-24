@@ -1,0 +1,21 @@
+.ToggleButton {
+  width: 12%;
+}
+
+.ToggleButton > div {
+  width: 80%;
+  height: 4px;
+  background-color: white;
+  margin: 6px auto 0 auto;
+  box-sizing: border-box;
+}
+
+.ToggleButton > div:first-child {
+  margin-top: unset;
+}
+
+@media (min-width: 500px) {
+  .ToggleButton {
+    display: none;
+  }
+}
