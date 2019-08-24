@@ -1,11 +1,13 @@
 import React from "react";
 
-import Aux from "../../AuxHOC";
+import Aux from "../../HOC/AuxHOC/AuxHOC";
 
 import OperatorType from "./BurgerOperations";
 import Burger from "../../components/Burger/Burger";
 import BurgerControls from "../../components/Burger/BuildControls/BuildControls";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
+
+import Axios from "../../AxiosOrders";
 
 const INGREDINT_PRICE = Object.freeze({
   salad: 0.5,
@@ -25,7 +27,8 @@ class BurgerBuilder extends React.Component {
         meat: 0
       },
       totalPrice: 0,
-      showOrderSummary: false
+      showOrderSummary: false,
+      isRequestSent: false
     };
   }
 
@@ -37,7 +40,23 @@ class BurgerBuilder extends React.Component {
     this.setState({ showOrderSummary: false });
   };
 
-  checkoutHandler = () => {};
+  checkoutHandler = async () => {
+    try {
+      const order = {
+        ingredients: { ...this.state.ingredients },
+        totalPrice: this.state.ingredients
+      };
+      this.setState({ isRequestSent: true });
+      await Axios.post("orders.json", order);
+      this.setState({ isRequestSent: false, showOrderSummary: false });
+    } catch (e) {
+      console.log(e);
+      this.setState({
+        isRequestSent: false,
+        showOrderSummary: false
+      });
+    }
+  };
 
   updateIngredient = (type, operator) => {
     let newIngredients = { ...this.state.ingredients };
@@ -86,6 +105,7 @@ class BurgerBuilder extends React.Component {
           ingredients={this.state.ingredients}
           checkoutHandler={this.checkoutHandler}
           totalPrice={this.state.totalPrice}
+          requestSent={this.state.isRequestSent}
         />
       </Aux>
     );

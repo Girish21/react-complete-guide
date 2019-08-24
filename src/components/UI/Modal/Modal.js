@@ -4,7 +4,7 @@ import PropTypes from "prop-types";
 
 import classes from "./Modal.module.css";
 
-import Aux from "../../../AuxHOC";
+import Aux from "../../../HOC/AuxHOC/AuxHOC";
 import Backdrop from "../Backdrop/Backdrop";
 
 const modal = props => (

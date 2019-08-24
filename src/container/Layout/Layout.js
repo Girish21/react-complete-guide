@@ -1,5 +1,5 @@
 import React from "react";
-import Aux from "../../AuxHOC";
+import Aux from "../../HOC/AuxHOC/AuxHOC";
 
 import classes from "./Layout.module.css";
 
