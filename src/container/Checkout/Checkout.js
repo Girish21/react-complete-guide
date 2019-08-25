@@ -17,7 +17,6 @@ class Checkout extends Component {
   };
 
   componentDidMount() {
-    console.log(this.props);
     const { ingredients, price } = this.props.history.location.state;
     this.setState({ ingredients: ingredients, price: price });
   }

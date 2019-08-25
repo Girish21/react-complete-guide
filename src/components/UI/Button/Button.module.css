@@ -10,6 +10,11 @@
   font-weight: bold;
 }
 
+.Button:disabled {
+  cursor: not-allowed;
+  color: slategrey;
+}
+
 .Button:first-of-type {
   margin-left: 0;
   padding-left: 0;

@@ -1,7 +1,5 @@
 import React, { Component } from "react";
 
-import classes from "./Orders.module.css";
-
 import axios from "../../AxiosOrders";
 
 import Order from "../../components/Order/Order";
