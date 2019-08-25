@@ -7,7 +7,7 @@ import Burger from "../../components/Burger/Burger";
 import BurgerControls from "../../components/Burger/BuildControls/BuildControls";
 import OrderSummary from "../../components/Burger/OrderSummary/OrderSummary";
 
-import Axios from "../../AxiosOrders";
+// import Axios from "../../AxiosOrders";
 
 const INGREDINT_PRICE = Object.freeze({
   salad: 0.5,
@@ -42,13 +42,19 @@ class BurgerBuilder extends React.Component {
 
   checkoutHandler = async () => {
     try {
-      const order = {
-        ingredients: { ...this.state.ingredients },
-        totalPrice: this.state.ingredients
+      // const order = {
+      //   ingredients: { ...this.state.ingredients },
+      //   totalPrice: this.state.ingredients
+      // };
+      // this.setState({ isRequestSent: true });
+      // await Axios.post("orders.json", order);
+      // this.setState({ isRequestSent: false, showOrderSummary: false });
+      // console.log(this.props);
+      const state = {
+        ingredients: this.state.ingredients,
+        price: this.state.totalPrice
       };
-      this.setState({ isRequestSent: true });
-      await Axios.post("orders.json", order);
-      this.setState({ isRequestSent: false, showOrderSummary: false });
+      this.props.history.push("/checkout", state);
     } catch (e) {
       console.log(e);
       this.setState({
