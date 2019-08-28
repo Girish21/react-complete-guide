@@ -1,8 +1,12 @@
 import React, { Component } from "react";
 
+import { connect } from "react-redux";
+
 import { withRouter } from "react-router-dom";
 
 import classes from "./ContactData.module.css";
+
+import { CLEAR_INGREDIENT } from "../../../store/actions/actions";
 
 import Aux from "../../../HOC/AuxHOC/AuxHOC";
 
@@ -107,8 +111,6 @@ class ContactData extends Component {
         value: ""
       }
     },
-    ingredients: null,
-    price: null,
     isLoading: false
   };
 
@@ -121,7 +123,6 @@ class ContactData extends Component {
 
   submitHandler = async e => {
     e.preventDefault();
-    console.log(this.state);
     this.setState({ isLoading: true });
 
     const userData = {};
@@ -139,13 +140,14 @@ class ContactData extends Component {
     });
 
     const uploadObject = {};
-    uploadObject["ingredients"] = this.state.ingredients;
-    uploadObject["totalPrice"] = this.state.price;
+    uploadObject["ingredients"] = this.props.ingredients;
+    uploadObject["totalPrice"] = this.props.price;
     uploadObject["userData"] = userData;
 
     try {
       await Axios.post("orders.json", uploadObject);
       this.setState({ isLoading: false });
+      this.props.clearIngredients();
       this.props.history.replace("/");
     } catch (e) {
       console.log(e);
@@ -260,7 +262,6 @@ class ContactData extends Component {
         }
       })
       .reduce((arr, cur) => arr.concat(cur), []);
-    console.log(t, formValid);
     return (
       <div className={classes.ContactData}>
         {!this.state.isLoading && (
@@ -284,4 +285,20 @@ class ContactData extends Component {
   }
 }
 
-export default httpErrorHandler(withRouter(ContactData), Axios);
+const mapStateToProps = state => {
+  return {
+    ingredients: state.ingredients,
+    price: state.totalPrice
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    clearIngredients: () => dispatch({ type: CLEAR_INGREDIENT })
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(httpErrorHandler(withRouter(ContactData), Axios));

@@ -57,8 +57,7 @@ OrderSummary.propTypes = {
   showModal: PropTypes.bool.isRequired,
   click: PropTypes.func.isRequired,
   checkoutHandler: PropTypes.func.isRequired,
-  totalPrice: PropTypes.number.isRequired,
-  errorMessage: PropTypes.string
+  totalPrice: PropTypes.number.isRequired
 };
 
 export default withErrorMessage(OrderSummary, Axios);

@@ -1,42 +1,34 @@
 import React, { Component } from "react";
 
+import { connect } from "react-redux";
+
 import { Route } from "react-router-dom";
 
 import CheckoutSummay from "../../components/Order/CheckoutSummary/CheckoutSummary";
 import ContactData from "./ContactData/ContactData";
 
 class Checkout extends Component {
-  state = {
-    ingredients: {
-      salad: 0,
-      bacaon: 0,
-      cheese: 0,
-      meat: 0
-    },
-    price: null
-  };
-
-  componentDidMount() {
-    const { ingredients, price } = this.props.history.location.state;
-    this.setState({ ingredients: ingredients, price: price });
-  }
-
   render() {
     return (
       <div>
-        <CheckoutSummay ingredients={this.state.ingredients} />
+        <CheckoutSummay ingredients={this.props.ingredients} />
         <Route
           path={this.props.match.url + "/contact-data"}
-          render={() => (
-            <ContactData
-              ingredients={this.state.ingredients}
-              price={this.state.price}
-            />
-          )}
+          component={ContactData}
         />
       </div>
     );
   }
 }
 
-export default Checkout;
+const mapStateToProps = state => {
+  return {
+    ingredients: state.ingredients,
+    totalPrice: state.totalPrice
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  null
+)(Checkout);

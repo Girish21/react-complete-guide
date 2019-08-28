@@ -14,7 +14,8 @@ const controls = [
 ];
 
 const buildControls = ({
-  changeHandler,
+  addIngredient,
+  deleteIngredient,
   disabledArray,
   totalPrice,
   disableOrder,
@@ -29,7 +30,8 @@ const buildControls = ({
         <BuildControl
           label={ele.label}
           key={i}
-          changeHandler={changeHandler}
+          addIngredient={addIngredient}
+          deleteIngredient={deleteIngredient}
           disabled={disabledArray[ele.label.toLowerCase()]}
         />
       ))}
@@ -45,7 +47,8 @@ const buildControls = ({
 };
 
 buildControls.prototype = {
-  changeHandler: PropTypes.func.isRequired,
+  addIngredient: PropTypes.func.isRequired,
+  deleteIngredient: PropTypes.func.isRequired,
   disabledArray: PropTypes.array.isRequired,
   totalPrice: PropTypes.number.isRequired,
   disableOrder: PropTypes.bool.isRequired,
