@@ -1,9 +1,11 @@
 import React from "react";
 
+import axios from "../../AxiosOrders";
+
 import Modal from "../../components/UI/Modal/Modal";
 import Aux from "../AuxHOC/AuxHOC";
 
-const errorHandler = (WrapperComponent, axios) => {
+const errorHandler = WrapperComponent => {
   return class extends React.Component {
     state = {
       error: null
@@ -15,7 +17,6 @@ const errorHandler = (WrapperComponent, axios) => {
           return req;
         },
         error => {
-          console.log(error);
           this.setState({
             error: error
           });
@@ -25,9 +26,9 @@ const errorHandler = (WrapperComponent, axios) => {
       this.resInterseptor = axios.interceptors.response.use(
         res => res,
         error => {
-          console.log(error);
+          console.log(error.response.data);
           this.setState({
-            error: error
+            error: error.response.data.error
           });
           return Promise.reject(error);
         }
@@ -41,12 +42,13 @@ const errorHandler = (WrapperComponent, axios) => {
 
     closeModal = () => {
       this.setState({ error: null });
+      this.props.history.push("/");
     };
     render() {
       return (
         <Aux>
           <Modal show={this.state.error} click={this.closeModal}>
-            {this.state.error ? this.state.error.message : null}
+            {this.state.error ? this.state.error : null}
           </Modal>
           <WrapperComponent {...this.props} />
         </Aux>

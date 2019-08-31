@@ -68,7 +68,7 @@ export const fetchAllOrders = () => {
       dispatch(fetchAllOrdersSuccess(orderArray));
     } catch (e) {
       console.log(e);
-      dispatch(fetchAllOrderFail(e));
+      dispatch(fetchAllOrderFail(e.response.data.error));
     }
   };
 };

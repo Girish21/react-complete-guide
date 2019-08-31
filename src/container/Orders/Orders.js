@@ -2,9 +2,18 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 
+import { withRouter } from "react-router-dom";
+
+import { fetchAllOrders } from "../../store/actions/order";
+import httpErrorHandler from "../../HOC/Error/ErrorHandler";
+
 import Order from "../../components/Order/Order";
 
 class Orders extends Component {
+  componentDidMount() {
+    setTimeout(() => this.props.fetchOrders(), 0);
+  }
+
   render() {
     return (
       <div>
@@ -23,4 +32,13 @@ const mapStateToProps = state => {
   };
 };
 
-export default connect(mapStateToProps)(Orders);
+const mapDispatchToProps = dispatch => {
+  return {
+    fetchOrders: () => dispatch(fetchAllOrders())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(httpErrorHandler(withRouter(Orders)));
