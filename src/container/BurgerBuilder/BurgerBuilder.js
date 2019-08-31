@@ -1,7 +1,11 @@
 import React from "react";
 
 import { connect } from "react-redux";
-import { ADD_INGREDIENT, DELETE_INGREDIENT } from "../../store/actions/actions";
+import {
+  addIngredient,
+  deleteIngredient,
+  clearIngredients
+} from "../../store/actions/burgerBuilder";
 
 import Aux from "../../HOC/AuxHOC/AuxHOC";
 
@@ -15,6 +19,10 @@ class BurgerBuilder extends React.Component {
     this.state = {
       showOrderSummary: false
     };
+  }
+
+  componentDidMount() {
+    this.props.clearIngredients();
   }
 
   orderHandler = () => {
@@ -62,20 +70,18 @@ class BurgerBuilder extends React.Component {
 
 const mapStateToProps = state => {
   return {
-    ingredients: state.ingredients,
-    totalPrice: state.totalPrice
+    ingredients: state.burgerReducer.ingredients,
+    totalPrice: state.burgerReducer.totalPrice
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
     onClickAddIngredient: ingredient =>
-      dispatch({ type: ADD_INGREDIENT, payload: { ingredient: ingredient } }),
+      dispatch(addIngredient({ ingredient: ingredient })),
     onClickDeleteIngredient: ingredient =>
-      dispatch({
-        type: DELETE_INGREDIENT,
-        payload: { ingredient: ingredient }
-      })
+      dispatch(deleteIngredient({ ingredient: ingredient })),
+    clearIngredients: () => dispatch(clearIngredients())
   };
 };
 

@@ -15,45 +15,47 @@ class OrderSummary extends React.Component {
   }
   render() {
     return (
-      <Modal click={this.props.click} show={this.props.showModal}>
-        {!this.props.requestSent && (
-          <Aux>
-            <h4>Your Order</h4>
-            <p>A delicious Burger with:</p>
-            <ul>
-              {Object.keys(this.props.ingredients).map((igKey, i) => {
-                if (this.props.ingredients[igKey] !== 0) {
-                  return (
-                    <li key={i}>
-                      <span style={{ textTransform: "capitalize" }}>
-                        {igKey}
-                      </span>{" "}
-                      : {this.props.ingredients[igKey]}
-                    </li>
-                  );
-                } else return null;
-              })}
-            </ul>
-            <p>
-              <strong>Order Total: {this.props.totalPrice.toFixed(2)}</strong>
-            </p>
-            <p>Continue to Checkout?</p>
-            <Button click={this.props.checkoutHandler} type={"Success"}>
-              Continue
-            </Button>
-            <Button click={this.props.click} type={"Danger"}>
-              Cancel
-            </Button>
-          </Aux>
-        )}
-        {this.props.requestSent && <Spinner />}
-      </Modal>
+      this.props.ingredients && (
+        <Modal click={this.props.click} show={this.props.showModal}>
+          {!this.props.requestSent && (
+            <Aux>
+              <h4>Your Order</h4>
+              <p>A delicious Burger with:</p>
+              <ul>
+                {Object.keys(this.props.ingredients).map((igKey, i) => {
+                  if (this.props.ingredients[igKey] !== 0) {
+                    return (
+                      <li key={i}>
+                        <span style={{ textTransform: "capitalize" }}>
+                          {igKey}
+                        </span>{" "}
+                        : {this.props.ingredients[igKey]}
+                      </li>
+                    );
+                  } else return null;
+                })}
+              </ul>
+              <p>
+                <strong>Order Total: {this.props.totalPrice.toFixed(2)}</strong>
+              </p>
+              <p>Continue to Checkout?</p>
+              <Button click={this.props.checkoutHandler} type={"Success"}>
+                Continue
+              </Button>
+              <Button click={this.props.click} type={"Danger"}>
+                Cancel
+              </Button>
+            </Aux>
+          )}
+          {this.props.requestSent && <Spinner />}
+        </Modal>
+      )
     );
   }
 }
 
 OrderSummary.propTypes = {
-  ingredients: PropTypes.object.isRequired,
+  ingredients: PropTypes.object,
   showModal: PropTypes.bool.isRequired,
   click: PropTypes.func.isRequired,
   checkoutHandler: PropTypes.func.isRequired,

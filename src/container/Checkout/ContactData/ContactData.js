@@ -2,11 +2,11 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 
 import classes from "./ContactData.module.css";
 
-import { CLEAR_INGREDIENT } from "../../../store/actions/actions";
+import { placeOrder } from "../../../store/actions/order";
 
 import Aux from "../../../HOC/AuxHOC/AuxHOC";
 
@@ -106,12 +106,11 @@ class ContactData extends Component {
         validation: {
           required: true
         },
-        valid: false,
+        valid: true,
         touched: false,
-        value: ""
+        value: "fastest"
       }
-    },
-    isLoading: false
+    }
   };
 
   componentDidMount() {
@@ -123,7 +122,6 @@ class ContactData extends Component {
 
   submitHandler = async e => {
     e.preventDefault();
-    this.setState({ isLoading: true });
 
     const userData = {};
     Object.keys(this.state.customerDetails).forEach(key => {
@@ -144,14 +142,7 @@ class ContactData extends Component {
     uploadObject["totalPrice"] = this.props.price;
     uploadObject["userData"] = userData;
 
-    try {
-      await Axios.post("orders.json", uploadObject);
-      this.setState({ isLoading: false });
-      this.props.clearIngredients();
-      this.props.history.replace("/");
-    } catch (e) {
-      console.log(e);
-    }
+    this.props.placeOrder(uploadObject);
   };
 
   touchHandler = (event, inputIdentifier, isAddress = false) => {
@@ -264,7 +255,7 @@ class ContactData extends Component {
       .reduce((arr, cur) => arr.concat(cur), []);
     return (
       <div className={classes.ContactData}>
-        {!this.state.isLoading && (
+        {!this.props.isLoading && (
           <Aux>
             <h4>Enter your Contact Details</h4>
             <form>
@@ -279,7 +270,8 @@ class ContactData extends Component {
             </form>
           </Aux>
         )}
-        {this.state.isLoading && <Spinner />}
+        {this.props.isLoading && <Spinner />}
+        {this.props.purchased && <Redirect to="/" />}
       </div>
     );
   }
@@ -287,14 +279,16 @@ class ContactData extends Component {
 
 const mapStateToProps = state => {
   return {
-    ingredients: state.ingredients,
-    price: state.totalPrice
+    ingredients: state.burgerReducer.ingredients,
+    price: state.burgerReducer.totalPrice,
+    isLoading: state.orderReducer.isLoading,
+    purchased: state.orderReducer.purchased
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    clearIngredients: () => dispatch({ type: CLEAR_INGREDIENT })
+    placeOrder: order => dispatch(placeOrder(order))
   };
 };
 

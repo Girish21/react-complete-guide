@@ -1,4 +1,4 @@
-import * as Actions from "../actions/actions";
+import * as Actions from "../actions/burgerBuilder";
 
 const initState = {
   ingredients: {
@@ -41,7 +41,7 @@ const reducer = (state = initState, action) => {
         totalPrice:
           state.totalPrice - INGREDINT_PRICE[action.payload.ingredient]
       };
-    case Actions.CLEAR_INGREDIENT:
+    case Actions.CLEAR_INGREDIENTS:
       return {
         ...state,
         ingredients: initState.ingredients,
