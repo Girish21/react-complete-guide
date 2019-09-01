@@ -11,7 +11,9 @@ import Order from "../../components/Order/Order";
 
 class Orders extends Component {
   componentDidMount() {
-    setTimeout(() => this.props.fetchOrders(), 0);
+    setTimeout(() => {
+      this.props.fetchOrders(this.props.token, this.props.localId);
+    }, 0);
   }
 
   render() {
@@ -28,13 +30,15 @@ class Orders extends Component {
 
 const mapStateToProps = state => {
   return {
-    orders: state.orderReducer.orders
+    orders: state.orderReducer.orders,
+    token: state.authReducer.userData.idToken,
+    localId: state.authReducer.userData.localId
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    fetchOrders: () => dispatch(fetchAllOrders())
+    fetchOrders: (token, userId) => dispatch(fetchAllOrders(token, userId))
   };
 };
 

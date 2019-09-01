@@ -13,7 +13,10 @@ const toolbar = props => (
       <Logo />
     </div>
     <nav className={classes.NavigationItems}>
-      <NavigationItems />
+      <NavigationItems
+        logout={props.logoutHandler}
+        isAuthenticated={props.isAuthenticated}
+      />
     </nav>
   </header>
 );

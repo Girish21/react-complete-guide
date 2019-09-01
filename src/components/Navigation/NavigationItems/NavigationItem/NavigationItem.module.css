@@ -15,8 +15,23 @@
 
 .NavigationItem a:hover,
 .NavigationItem a:active,
-.NavigationItem a.active {
+.NavigationItem a.active,
+.NavigationItem button:hover,
+.NavigationItem button:active,
+.NavigationItem button.active {
   color: #40a4c8;
+}
+
+.NavigationItem button {
+  color: #8f5c2c;
+  outline: unset;
+  background-color: transparent;
+  border: unset;
+  display: block;
+  width: 100%;
+  box-sizing: border-box;
+  font: inherit !important;
+  cursor: pointer;
 }
 
 @media (min-width: 500px) {
@@ -36,9 +51,20 @@
     width: auto;
   }
 
+  .NavigationItem button {
+    color: white;
+    height: 100%;
+    padding: 16px 8px;
+    border-bottom: 4px solid transparent;
+    width: auto;
+  }
+
   .NavigationItem a:hover,
   .NavigationItem a:active,
-  .NavigationItem a.active {
+  .NavigationItem a.active,
+  .NavigationItem button:hover,
+  .NavigationItem button:active,
+  .NavigationItem button.active {
     background-color: #8f5c2c;
     border-bottom: 4px solid #40a4c8;
     color: white;

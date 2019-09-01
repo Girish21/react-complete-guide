@@ -21,7 +21,10 @@ const sideDrawer = props => {
           <Logo />
         </div>
         <nav>
-          <NavigationItems />
+          <NavigationItems
+            logout={props.logoutHandler}
+            isAuthenticated={props.isAuthenticated}
+          />
         </nav>
       </div>
     </Aux>

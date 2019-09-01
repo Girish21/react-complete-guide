@@ -57,29 +57,30 @@ export const fetchAllOrderFail = error => {
   };
 };
 
-export const fetchAllOrders = () => {
+export const fetchAllOrders = (token, userId) => {
   return async dispatch => {
     try {
-      const orders = await Axios.get("orders.json");
+      const orders = await Axios.get(
+        `orders.json?auth=${token}&orderBy="userId"&equalTo="${userId}"`
+      );
       const orderArray = [];
       Object.keys(orders.data).forEach(key =>
         orderArray.push({ ...orders.data[key], id: key })
       );
       dispatch(fetchAllOrdersSuccess(orderArray));
     } catch (e) {
-      console.log(e);
+      console.log(e.response);
       dispatch(fetchAllOrderFail(e.response.data.error));
     }
   };
 };
 
-export const placeOrder = payload => {
+export const placeOrder = (payload, token) => {
   return async dispatch => {
     dispatch(orderStart());
     try {
-      const id = await Axios.post("orders.json", payload);
+      const id = await Axios.post(`orders.json?auth=${token}`, payload);
       dispatch(orderSuccess(id.data.name, payload));
-      console.log(payload);
     } catch (e) {
       console.log(e);
       dispatch(orderFail(e));

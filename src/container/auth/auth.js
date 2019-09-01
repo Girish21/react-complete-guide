@@ -2,6 +2,8 @@ import React, { Component } from "react";
 
 import { connect } from "react-redux";
 
+import { Redirect } from "react-router-dom";
+
 import { auth } from "../../store/actions/auth";
 
 import classes from "./auth.module.css";
@@ -123,8 +125,14 @@ class Auth extends Component {
         />
       );
     });
+    let redirect = null;
+    if (this.props.isAuthenticated && this.props.isBuildingBurger)
+      redirect = <Redirect to="/checkout" />;
+    else if (this.props.isAuthenticated) redirect = <Redirect to="/" />;
+
     return (
       <Aux>
+        {redirect}
         {this.props.loading ? (
           <div className={classes.AuthForm}>
             <Spinner />
@@ -159,7 +167,9 @@ class Auth extends Component {
 const mapStateToProps = state => {
   return {
     loading: state.authReducer.isLoading,
-    errorMessage: state.authReducer.error
+    errorMessage: state.authReducer.error,
+    isAuthenticated: state.authReducer.userData !== null,
+    isBuildingBurger: state.burgerReducer.buildingBurger
   };
 };
 

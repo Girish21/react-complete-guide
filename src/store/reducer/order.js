@@ -23,16 +23,11 @@ const reducer = (state = initState, action) => {
     case PURCHASE_START:
       return { ...state, purchased: false };
     case ORDER_SUCCESS:
-      const order = {
-        ...action.payload.orderData,
-        id: action.payload.orderId
-      };
       return {
         ...state,
         error: "",
         isLoading: false,
-        purchased: true,
-        orders: state.orders.concat(order)
+        purchased: true
       };
     case ORDER_FAIL:
       return {
@@ -43,7 +38,7 @@ const reducer = (state = initState, action) => {
     case FETCH_ALL_ORDERS_SUCCESS:
       return {
         ...state,
-        orders: state.orders.concat([...action.payload]),
+        orders: [...action.payload],
         fetchOrdersError: ""
       };
     case FETCH_ALL_ORDERS_FAIL:

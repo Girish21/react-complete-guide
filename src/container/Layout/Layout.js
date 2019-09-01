@@ -1,4 +1,9 @@
 import React from "react";
+
+import { connect } from "react-redux";
+
+import { logOut } from "../../store/actions/auth";
+
 import Aux from "../../HOC/AuxHOC/AuxHOC";
 
 import classes from "./Layout.module.css";
@@ -23,8 +28,14 @@ class Layout extends React.Component {
     return (
       <Aux>
         <div>
-          <Toolbar openSideDrawer={this.openSideDrawerHandler} />
+          <Toolbar
+            isAuthenticated={this.props.isAuthenticated !== null}
+            logoutHandler={this.props.logout}
+            openSideDrawer={this.openSideDrawerHandler}
+          />
           <SideDrawer
+            isAuthenticated={this.props.isAuthenticated !== null}
+            logoutHandler={this.props.logout}
             showSideDrawer={this.state.sideDrawerOpen}
             closeSideDrawer={this.closeSideDrawerHandler}
           />
@@ -35,4 +46,19 @@ class Layout extends React.Component {
   }
 }
 
-export default Layout;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.authReducer.userData
+  };
+};
+
+const mapDispatchToProps = dispatch => {
+  return {
+    logout: () => dispatch(logOut())
+  };
+};
+
+export default connect(
+  mapStateToProps,
+  mapDispatchToProps
+)(Layout);

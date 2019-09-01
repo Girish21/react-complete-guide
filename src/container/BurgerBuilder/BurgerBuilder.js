@@ -4,6 +4,7 @@ import { connect } from "react-redux";
 import {
   addIngredient,
   deleteIngredient,
+  stopBuildingBurger,
   clearIngredients
 } from "../../store/actions/burgerBuilder";
 
@@ -34,7 +35,8 @@ class BurgerBuilder extends React.Component {
   };
 
   checkoutHandler = () => {
-    this.props.history.push("/checkout");
+    if (this.props.isAuthenticated) this.props.history.push("/checkout");
+    else this.props.history.push("/auth");
   };
 
   render() {
@@ -46,7 +48,10 @@ class BurgerBuilder extends React.Component {
     });
     return (
       <Aux>
-        <Burger ingredients={this.props.ingredients} />
+        <Burger
+          ingredients={this.props.ingredients}
+          stopBuildingBurger={this.props.onStopBuildingBurger}
+        />
         <br />
         <BurgerControls
           addIngredient={this.props.onClickAddIngredient}
@@ -55,6 +60,7 @@ class BurgerBuilder extends React.Component {
           totalPrice={this.props.totalPrice}
           disableOrder={orderDisabled}
           order={this.orderHandler}
+          authenticated={this.props.isAuthenticated}
         />
         <OrderSummary
           click={this.backdropClickHandler}
@@ -71,7 +77,8 @@ class BurgerBuilder extends React.Component {
 const mapStateToProps = state => {
   return {
     ingredients: state.burgerReducer.ingredients,
-    totalPrice: state.burgerReducer.totalPrice
+    totalPrice: state.burgerReducer.totalPrice,
+    isAuthenticated: state.authReducer.userData !== null
   };
 };
 
@@ -81,6 +88,7 @@ const mapDispatchToProps = dispatch => {
       dispatch(addIngredient({ ingredient: ingredient })),
     onClickDeleteIngredient: ingredient =>
       dispatch(deleteIngredient({ ingredient: ingredient })),
+    onStopBuildingBurger: () => dispatch(stopBuildingBurger()),
     clearIngredients: () => dispatch(clearIngredients())
   };
 };

@@ -1,7 +1,7 @@
 import { AUTH_START, AUTH_SUCCESS, AUTH_FAIL, LOGOUT } from "../actions/auth";
 
 const initState = {
-  userData: {},
+  userData: null,
   error: "",
   isLoading: false
 };
@@ -11,7 +11,7 @@ const reducer = (state = initState, action) => {
     case AUTH_START:
       return {
         ...state,
-        userData: {},
+        userData: null,
         error: "",
         isLoading: true
       };

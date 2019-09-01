@@ -1,6 +1,8 @@
 import React, { Component } from "react";
 
-import { Route, Switch, Redirect } from "react-router-dom";
+import { Route, Switch, Redirect, withRouter } from "react-router-dom";
+
+import { connect } from "react-redux";
 
 import classes from "./App.module.css";
 import Layout from "./container/Layout/Layout";
@@ -15,8 +17,12 @@ class App extends Component {
       <div className={classes.App}>
         <Layout>
           <Switch>
-            <Route path="/checkout" component={Checkout} />
-            <Route path="/orders" component={Orders} />
+            {this.props.isAuthenticated && (
+              <Route path="/checkout" component={Checkout} />
+            )}
+            {this.props.isAuthenticated && (
+              <Route path="/orders" component={Orders} />
+            )}
             <Route path="/auth" component={Auth} />
             <Route path="/" exact component={BurgerBuilder} />
             <Redirect from="/" to="/" />
@@ -27,4 +33,10 @@ class App extends Component {
   }
 }
 
-export default App;
+const mapStateToProps = state => {
+  return {
+    isAuthenticated: state.authReducer.userData !== null
+  };
+};
+
+export default withRouter(connect(mapStateToProps)(App));

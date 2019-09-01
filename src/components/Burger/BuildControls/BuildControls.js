@@ -19,7 +19,8 @@ const buildControls = ({
   disabledArray,
   totalPrice,
   disableOrder,
-  order
+  order,
+  authenticated
 }) => {
   return (
     <div className={classes.BuildControls}>
@@ -40,7 +41,7 @@ const buildControls = ({
         className={classes.OrderButton}
         onClick={order}
       >
-        Order Now
+        {authenticated ? "Order Now" : "Sign In to Order"}
       </button>
     </div>
   );
@@ -52,7 +53,8 @@ buildControls.prototype = {
   disabledArray: PropTypes.array.isRequired,
   totalPrice: PropTypes.number.isRequired,
   disableOrder: PropTypes.bool.isRequired,
-  order: PropTypes.func.isRequired
+  order: PropTypes.func.isRequired,
+  authenticated: PropTypes.bool.isRequired
 };
 
 export default buildControls;

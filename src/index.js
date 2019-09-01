@@ -8,6 +8,7 @@ import "./index.css";
 import App from "./App";
 import registerServiceWorker from "./registerServiceWorker";
 import reducer from "./store/reducer/index";
+import { autoSingin } from "./store/actions/auth";
 
 const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
@@ -23,6 +24,8 @@ const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 // };
 
 const store = createStore(reducer, composeEnhancers(applyMiddleware(thunk)));
+
+store.dispatch(autoSingin());
 
 ReactDOM.render(
   <Provider store={store}>

@@ -10,6 +10,7 @@ import { placeOrder } from "../../../store/actions/order";
 
 import Aux from "../../../HOC/AuxHOC/AuxHOC";
 
+import Modal from "../../../components/UI/Modal/Modal";
 import Input from "../../../components/UI/Input/Input";
 import Button from "../../../components/UI/Button/Button";
 import Spinner from "../../../components/UI/Spinner/Spinner";
@@ -139,8 +140,9 @@ class ContactData extends Component {
     uploadObject["ingredients"] = this.props.ingredients;
     uploadObject["totalPrice"] = this.props.price;
     uploadObject["userData"] = userData;
+    uploadObject["userId"] = this.props.userData.localId;
 
-    this.props.placeOrder(uploadObject);
+    this.props.placeOrder(uploadObject, this.props.userData.idToken);
   };
 
   touchHandler = (event, inputIdentifier, isAddress = false) => {
@@ -175,6 +177,10 @@ class ContactData extends Component {
       updatedDetails[inputIdentifier] = updatedField;
       this.setState({ customerDetails: updatedDetails });
     }
+  };
+
+  redirect = () => {
+    this.props.history.push("/auth");
   };
 
   render() {
@@ -252,25 +258,30 @@ class ContactData extends Component {
       })
       .reduce((arr, cur) => arr.concat(cur), []);
     return (
-      <div className={classes.ContactData}>
-        {!this.props.isLoading && (
-          <Aux>
-            <h4>Enter your Contact Details</h4>
-            <form>
-              {t}
-              <Button
-                type="Success"
-                disabled={!formValid}
-                click={this.submitHandler}
-              >
-                Submit
-              </Button>
-            </form>
-          </Aux>
-        )}
-        {this.props.isLoading && <Spinner />}
-        {this.props.purchased && <Redirect to="/" />}
-      </div>
+      <Aux>
+        <Modal click={this.redirect} show={this.props.userData === null}>
+          Not authenticated, Redirecting!
+        </Modal>
+        <div className={classes.ContactData}>
+          {!this.props.isLoading && (
+            <Aux>
+              <h4>Enter your Contact Details</h4>
+              <form>
+                {t}
+                <Button
+                  type="Success"
+                  disabled={!formValid}
+                  click={this.submitHandler}
+                >
+                  Submit
+                </Button>
+              </form>
+            </Aux>
+          )}
+          {this.props.isLoading && <Spinner />}
+          {this.props.purchased && <Redirect to="/" />}
+        </div>
+      </Aux>
     );
   }
 }
@@ -280,13 +291,14 @@ const mapStateToProps = state => {
     ingredients: state.burgerReducer.ingredients,
     price: state.burgerReducer.totalPrice,
     isLoading: state.orderReducer.isLoading,
-    purchased: state.orderReducer.purchased
+    purchased: state.orderReducer.purchased,
+    userData: state.authReducer.userData
   };
 };
 
 const mapDispatchToProps = dispatch => {
   return {
-    placeOrder: order => dispatch(placeOrder(order))
+    placeOrder: (order, token) => dispatch(placeOrder(order, token))
   };
 };
 

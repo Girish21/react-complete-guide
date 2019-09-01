@@ -22,8 +22,10 @@ const burger = props => {
       .reduce((arr, ele) => [...arr, ...ele], []);
   }
 
-  if (ingredients.length === 0)
+  if (ingredients.length === 0) {
     ingredients = <h4>Please start adding ingredients to the Burger</h4>;
+    props.stopBuildingBurger();
+  }
 
   return (
     <div className={classes.Burger}>

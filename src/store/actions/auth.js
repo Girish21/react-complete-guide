@@ -29,6 +29,7 @@ export const authFail = payload => {
 };
 
 export const logOut = () => {
+  localStorage.clear();
   return {
     type: LOGOUT
   };
@@ -52,11 +53,37 @@ export const auth = (email, password, signIn) => {
         password: password,
         returnSecureToken: true
       });
+      const expDate = new Date(
+        new Date().getTime() + result.data.expiresIn * 1000
+      );
+      localStorage.setItem("token", result.data.idToken);
+      localStorage.setItem("expiresIn", expDate);
+      localStorage.setItem("userId", result.data.localId);
       dispatch(authSuccess(result.data));
       dispatch(checkAuthTimeOut(result.data.expiresIn));
     } catch (e) {
       console.log(e.response);
       dispatch(authFail(e.response.data.error.message));
     }
+  };
+};
+
+export const autoSingin = () => {
+  return dispatch => {
+    const idToken = localStorage.getItem("token");
+    const expiresIn = localStorage.getItem("expiresIn");
+    const localId = localStorage.getItem("userId");
+    const obj = {
+      idToken,
+      localId,
+      expiresIn
+    };
+    if (idToken !== null) dispatch(authSuccess(obj));
+    else dispatch(logOut());
+    dispatch(
+      checkAuthTimeOut(
+        (new Date(expiresIn).getTime() - new Date().getTime()) / 1000
+      )
+    );
   };
 };
