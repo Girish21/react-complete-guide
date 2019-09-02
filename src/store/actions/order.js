@@ -1,6 +1,6 @@
-import Axios from "../../AxiosOrders";
-
 export const PLACE_ORDER = "PLACE_ORDER";
+
+export const PLACE_ORDER_START = "PLACE_ORDER_START";
 
 export const ORDER_SUCCESS = "ORDER_SUCCESS";
 
@@ -9,6 +9,8 @@ export const ORDER_FAIL = "ORER_FAIL";
 export const ORDER_START = "ORDER_START";
 
 export const PURCHASE_START = "PURCHASE_START";
+
+export const FETCH_ALL_ORDER_START = "FETCH_ORDER_START";
 
 export const FETCH_ALL_ORDERS_SUCCESS = "FETCH_ALL_ORDERS_SUCCESS";
 
@@ -58,32 +60,21 @@ export const fetchAllOrderFail = error => {
 };
 
 export const fetchAllOrders = (token, userId) => {
-  return async dispatch => {
-    try {
-      const orders = await Axios.get(
-        `orders.json?auth=${token}&orderBy="userId"&equalTo="${userId}"`
-      );
-      const orderArray = [];
-      Object.keys(orders.data).forEach(key =>
-        orderArray.push({ ...orders.data[key], id: key })
-      );
-      dispatch(fetchAllOrdersSuccess(orderArray));
-    } catch (e) {
-      console.log(e.response);
-      dispatch(fetchAllOrderFail(e.response.data.error));
+  return {
+    type: FETCH_ALL_ORDER_START,
+    payload: {
+      token,
+      userId
     }
   };
 };
 
 export const placeOrder = (payload, token) => {
-  return async dispatch => {
-    dispatch(orderStart());
-    try {
-      const id = await Axios.post(`orders.json?auth=${token}`, payload);
-      dispatch(orderSuccess(id.data.name, payload));
-    } catch (e) {
-      console.log(e);
-      dispatch(orderFail(e));
+  return {
+    type: PLACE_ORDER_START,
+    payload: {
+      data: payload,
+      token
     }
   };
 };
